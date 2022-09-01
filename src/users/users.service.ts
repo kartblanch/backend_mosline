@@ -1,9 +1,10 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {User} from "./users.entity";
 import {Repository} from "typeorm";
 import {CreateUserDto} from "./dto/create-user.dto";
 import {RolesService} from "../roles/roles.service";
+import {AddRoleDto} from "./dto/add-role.dto";
 
 @Injectable()
 export class UsersService {
@@ -13,7 +14,7 @@ export class UsersService {
 
     async createUser(dto: CreateUserDto) {
         const user = this.usersRepository.create(dto);
-        const role = await this.roleService.getRoleByValue('USER');
+        const role = await this.roleService.getRoleByValue('ADMIN');
         user.role = [role];
         await this.usersRepository.save(user);
         return user;
@@ -27,5 +28,17 @@ export class UsersService {
     async getUserByEmail(email: string) {
         const user = await this.usersRepository.findOne({where: {email}, relations: ['role']});
         return user;
+    }
+
+    async addRole(roleDto: AddRoleDto) {
+        const user = await this.usersRepository.findOneBy({id: roleDto.userId});
+        const role = await this.roleService.getRoleByValue(roleDto.value);
+        if (role && user) {
+            user.role = [role];
+            await this.usersRepository.save(user);
+            return user;
+        }
+
+        throw new HttpException('Сотрудник или роль не найдены', HttpStatus.NOT_FOUND);
     }
 }
