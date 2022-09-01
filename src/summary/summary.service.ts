@@ -34,15 +34,24 @@ export class SummaryService {
         return summary;
     }
 
-    async getSummaryByTestId(value: string) {
-
+    async getSummaryByTestId(id: string) {
+        const summary = await this.summaryRepository.find({
+            relations: ['test', 'user'],
+            where: {test: {id: Number(id)}},
+        });
+        return summary;
     }
 
-    async getSummaryByUserId(value: string) {
-
+    async getSummaryByUserId(id: string) {
+        const summary = await this.summaryRepository.find({
+            relations: ['test', 'user'],
+            where: {user: {id: Number(id)}},
+        });
+        return summary;
     }
 
     async getAllSummary() {
-
+        const summary = await this.summaryRepository.find({relations: ['user', 'test']});
+        return summary;
     }
 }

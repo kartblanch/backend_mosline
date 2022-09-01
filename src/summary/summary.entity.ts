@@ -1,7 +1,8 @@
-import {Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, Column} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, Column, ManyToMany, JoinTable, ManyToOne} from 'typeorm';
 import {User} from "../users/users.entity";
 import {ApiProperty} from "@nestjs/swagger";
 import {Tests} from "../tests/tests.entity";
+import {Role} from "../roles/roles.entity";
 
 @Entity('summary')
 export class Summary {
@@ -9,15 +10,11 @@ export class Summary {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ApiProperty({example: User, description: 'Пользователь'})
-    @OneToOne(() => User)
-    @JoinColumn()
-    user: User;
+    @ManyToOne(() => User, (user) => user)
+    user: User
 
-    @ApiProperty({example: Tests, description: 'Тест'})
-    @OneToOne(() => Tests)
-    @JoinColumn()
-    test: Tests;
+    @ManyToOne(() => Tests, (test) => test)
+    test: Tests
 
     @ApiProperty({example: '', description: 'Ответы пользователя'})
     @Column({

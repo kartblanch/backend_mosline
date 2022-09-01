@@ -1,6 +1,7 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany} from 'typeorm';
 import {Role} from "../roles/roles.entity";
 import {ApiProperty} from "@nestjs/swagger";
+import {Summary} from "../summary/summary.entity";
 
 @Entity('tests')
 export class Tests {
@@ -30,4 +31,7 @@ export class Tests {
     @ApiProperty({ description: 'Время создания теста'})
     @Column({type: 'timestamp', default: () => "CURRENT_TIMESTAMP"})
     dt: Date;
+
+    @OneToMany(() => Summary, (summary) => summary)
+    summary: Summary[];
 }

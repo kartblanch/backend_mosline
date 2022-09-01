@@ -1,10 +1,10 @@
 import {Body, Controller, Get, Param, Post} from '@nestjs/common';
 import {SummaryService} from "./summary.service";
-import {ApiOperation, ApiResponse} from "@nestjs/swagger";
-import {Tests} from "../tests/tests.entity";
+import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Summary} from "./summary.entity";
 import {CreateSummaryDto} from "./dto/create-summary.dto";
 
+@ApiTags('Результаты тестирования')
 @Controller('summary')
 export class SummaryController {
     constructor(private summaryService: SummaryService) {
@@ -20,8 +20,8 @@ export class SummaryController {
     @ApiOperation({summary: 'Получение результатов по уникальному идентификатору теста'})
     @ApiResponse({status: 200, type: [Summary]})
     @Get('/test/:id')
-    getByTestId(@Param('id') value: string) {
-        return this.summaryService.getSummaryByTestId(value);
+    getByTestId(@Param('id') id: string) {
+        return this.summaryService.getSummaryByTestId(id);
     }
 
     @ApiOperation({summary: 'Получение результатов по уникальному идентификатору пользователя'})

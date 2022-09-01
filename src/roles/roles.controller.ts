@@ -17,7 +17,7 @@ export class RolesController {
         return this.rolesService.createRole(dto);
     }
 
-    @ApiOperation({summary: 'Получение роли по уникальному идентификатору'})
+    @ApiOperation({summary: 'Получение роли по уникальному значению роли'})
     @ApiResponse({status: 200, type: Role})
     @Get('/:value')
     getByValue(@Param('value') value: string) {
