@@ -16,12 +16,12 @@ export class UsersController {
     constructor(private usersService: UsersService) {
     }
 
-    @ApiOperation({summary: 'Создание сотрудника'})
+    /*@ApiOperation({summary: 'Создание сотрудника'})
     @ApiResponse({status: 200, type: User})
     @Post()
     create(@Body() userDto: CreateUserDto) {
         return this.usersService.createUser(userDto);
-    }
+    }*/
 
     @ApiOperation({summary: 'Получение списка сотрудников'})
     @ApiResponse({status: 200, type: [User]})
@@ -36,7 +36,7 @@ export class UsersController {
     @ApiResponse({status: 200})
     @Roles('ADMIN')
     @UseGuards(RolesGuard)
-    @Post()
+    @Post('/role')
     addRole(@Body() userDto: AddRoleDto) {
         return this.usersService.addRole(userDto);
     }

@@ -40,9 +40,13 @@ export class AuthService {
 
     private async validateUser(userDto: UserLoginDto) {
         const user = await this.usersService.getUserByEmail(userDto.email);
-        const isCurrentPassword = await bcrypt.compare(userDto.password, user.password);
-        if (user && isCurrentPassword) {
-            return user;
+        if (user) {
+            const isCurrentPassword = await bcrypt.compare(userDto.password, user.password);
+            if (isCurrentPassword) {
+                return user;
+            }
+
+            throw new UnauthorizedException({message: 'Некорректные данные авторизации'});
         }
 
         throw new UnauthorizedException({message: 'Некорректные данные авторизации'});
