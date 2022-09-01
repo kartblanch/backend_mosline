@@ -6,10 +6,11 @@ import {User} from "./users.entity";
 import {Role} from "../roles/roles.entity";
 import {RolesModule} from "../roles/roles.module";
 import {AuthModule} from "../auth/auth.module";
+import {Summary} from "../summary/summary.entity";
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([User, Role]),
+        TypeOrmModule.forFeature([User, Role, Summary]),
         RolesModule,
         forwardRef(() => AuthModule)
     ],

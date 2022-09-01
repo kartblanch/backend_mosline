@@ -30,6 +30,11 @@ export class UsersService {
         return user;
     }
 
+    async getUserById(id: number) {
+        const user = await this.usersRepository.findOne({where: {id}});
+        return user;
+    }
+
     async addRole(roleDto: AddRoleDto) {
         const user = await this.usersRepository.findOneBy({id: roleDto.userId});
         const role = await this.roleService.getRoleByValue(roleDto.value);
