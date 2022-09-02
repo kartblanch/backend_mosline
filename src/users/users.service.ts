@@ -21,8 +21,8 @@ export class UsersService {
     }
 
     async getAllUsers() {
-        const users = this.usersRepository.find({relations: ['role']});
-        return users;
+        const users = await this.usersRepository.find({relations: ['role']});
+        return this.returnUser(users);
     }
 
     async getUserByEmail(email: string) {
@@ -45,5 +45,14 @@ export class UsersService {
         }
 
         throw new HttpException('Сотрудник или роль не найдены', HttpStatus.NOT_FOUND);
+    }
+
+    returnUser(users: User[]) {
+        return users.map(user => {
+            delete user.password;
+            delete user.role[0].value;
+            delete user.role[0].id;
+            return user;
+        });
     }
 }
